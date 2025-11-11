@@ -23,13 +23,13 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('avatar')->nullable();
             $table->foreignUuid('role_id')
-            ->nullable()
-            ->index()
-            ->constrained('roles')
-            ->restrictOnDelete();
+                ->nullable()
+                ->index()
+                ->constrained('roles')
+                ->restrictOnDelete();
             $table->boolean('is_active')
-            ->index()
-            ->default(true);
+                ->index()
+                ->default(true);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
@@ -43,7 +43,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table): void {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->foreignUuId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

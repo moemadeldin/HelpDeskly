@@ -124,7 +124,7 @@
 
 @section('auth-links')
     <p>Already have an account? 
-        <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-500 font-medium transition duration-200">
+        <a href="{{ route('login.get') }}" class="text-blue-600 hover:text-blue-500 font-medium transition duration-200">
             Sign in here
         </a>
     </p>

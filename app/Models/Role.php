@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -23,6 +24,12 @@ final class Role extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    public function scopeGetRoleIdByName(Builder $query, string $name): Builder
+    {
+        return $query->where('name', $name);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
