@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -29,4 +30,10 @@ Route::prefix('me')
         Route::get('', 'index')->name('profile.index');
         Route::put('', 'update')->name('profile.update');
         Route::delete('', 'destroy')->name('profile.destroy');
+    });
+
+Route::prefix('dashboard')
+    ->middleware(['auth', 'role:admin'])
+    ->group(function (): void {
+        Route::resource('categories', CategoryController::class);
     });
