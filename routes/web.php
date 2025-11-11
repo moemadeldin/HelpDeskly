@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 
@@ -19,5 +20,13 @@ Route::middleware('guest')->group(function (): void {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 Route::get('/home', function (): View {
-    return view('home');
+    return view('pages.home');
 })->name('home');
+
+Route::prefix('me')
+    ->middleware('auth')
+    ->controller(ProfileController::class)->group(function (): void {
+        Route::get('', 'index')->name('profile.index');
+        Route::put('', 'update')->name('profile.update');
+        Route::delete('', 'destroy')->name('profile.destroy');
+    });

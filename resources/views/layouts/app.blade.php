@@ -17,11 +17,12 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
-                    <a href={{ route('home') }}" class="text-xl font-bold">HelpDeskly</a>
+                    <a href={{ route('home') }} class="text-xl font-bold">HelpDeskly</a>
                 </div>
-                @if(auth()->check())
+                @if(Auth::check())
                     <div class="space-x-4">
-                        <a href="#" class="hover:text-blue-200">{{ auth()->user()->first_name ?? 'Guest'}}</a>
+                        <a href="{{ route('profile.index') }}"
+                            class="hover:text-blue-200">{{ Auth::user()->first_name ?? 'Guest'}}</a>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button class="hover:text-blue-200 #112cursor-pointer">Logout</button>

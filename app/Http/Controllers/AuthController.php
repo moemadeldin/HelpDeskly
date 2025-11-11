@@ -42,7 +42,7 @@ final class AuthController extends Controller
         $dto = LoginDTO::fromArray($request->validated());
         try {
             $user = $this->authService->login($dto);
-            if ($user->isActive()) {
+            if ($user) {
                 Auth::login($user);
 
                 return redirect()->route('home')->with('success', 'logged in successfully');

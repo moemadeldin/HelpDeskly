@@ -27,9 +27,6 @@
                     class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('email') border-red-500 @enderror"
                     placeholder="Enter your email">
                 @error('email')
-                    @unless(str_contains($message, 'Too many login attempts'))
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @endunless
                 @enderror
             </div>
 
