@@ -8,6 +8,7 @@ use App\Http\Controllers\BaseTicketController;
 use App\Http\Requests\FilterRequest;
 use App\Models\Category;
 use App\Models\Ticket;
+use App\Models\TicketMessage;
 use App\Queries\AdminTicketQuery;
 use Illuminate\View\View;
 
@@ -23,8 +24,13 @@ final class TicketController extends BaseTicketController
 
     public function show(Ticket $ticket): View
     {
+        $this->authorize('view', $ticket);
+
+        $messages = TicketMessage::getTicketMessages($ticket)->get();
+
         return view('dashboard.admin.tickets.show', [
             'ticket' => $ticket,
+            'messages' => $messages,
         ]);
     }
 

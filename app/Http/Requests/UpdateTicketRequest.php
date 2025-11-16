@@ -7,8 +7,8 @@ namespace App\Http\Requests;
 use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
 use App\Models\Ticket;
-use App\Models\TicketAttachment;
 use App\Models\User;
+use App\Utilities\Constants;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Container\Attributes\RouteParameter;
 use Illuminate\Foundation\Http\FormRequest;
@@ -39,7 +39,7 @@ final class UpdateTicketRequest extends FormRequest
             'category_id' => ['nullable', 'string', 'exists:categories,id'],
             'priority' => ['nullable', Rule::in(TicketPriority::cases())],
             'status' => ['sometimes', Rule::in(TicketStatus::cases())],
-            'attachments' => ['nullable', 'array', 'max:'.TicketAttachment::ALLOWED_NUMBER_OF_ATTACHMENTS],
+            'attachments' => ['nullable', 'array', 'max:'.Constants::$ALLOWED_NUMBER_OF_ATTACHMENTS],
             'attachments.*' => ['file', 'mimes:png,jpg,jpeg,pdf,doc,docx,txt', 'max:10240'],
         ];
     }

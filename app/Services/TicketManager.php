@@ -10,6 +10,7 @@ use App\Interfaces\TicketManagerInterface;
 use App\Models\Ticket;
 use App\Models\TicketAttachment;
 use App\Models\User;
+use App\Utilities\Constants;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -41,7 +42,7 @@ final class TicketManager implements TicketManagerInterface
             if ($dto->attachments && count($dto->attachments) > 0) {
                 $currCount = $ticket->attachments->count();
                 $newCount = count($dto->attachments);
-                $maxAllowed = TicketAttachment::ALLOWED_NUMBER_OF_ATTACHMENTS - $currCount;
+                $maxAllowed = Constants::$ALLOWED_NUMBER_OF_ATTACHMENTS - $currCount;
 
                 if ($newCount > $maxAllowed) {
                     throw ValidationException::withMessages([

@@ -8,6 +8,7 @@ namespace App\Models;
 
 use App\Enums\ActivityStatus;
 use App\Enums\Roles;
+use App\Utilities\Constants;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,12 +22,6 @@ final class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, HasUuids, Notifiable;
-
-    public const MIN_VERIFICATION_CODE = 100_000;
-
-    public const MAX_VERIFICATION_CODE = 999_999;
-
-    public const MAX_AGENT_TICKETS = 5;
 
     /**
      * The attributes that are mass assignable.
@@ -109,8 +104,8 @@ final class User extends Authenticatable
             ->where(function ($q) {
                 $q->whereHas('agentTickets', function ($subQuery) {
                     $subQuery->select(DB::raw('COUNT(*)'))
-                        ->havingRaw('COUNT(*) < ?', [self::MAX_AGENT_TICKETS]);
-                }, '<', self::MAX_AGENT_TICKETS)
+                        ->havingRaw('COUNT(*) < ?', [Constants::$MAX_AGENT_TICKETS]);
+                }, '<', Constants::$MAX_AGENT_TICKETS)
                     ->orDoesntHave('agentTickets');
             });
     }

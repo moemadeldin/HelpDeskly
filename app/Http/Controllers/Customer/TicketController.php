@@ -8,6 +8,7 @@ use App\Http\Controllers\BaseTicketController;
 use App\Http\Requests\FilterRequest;
 use App\Models\Category;
 use App\Models\Ticket;
+use App\Models\TicketMessage;
 use App\Models\User;
 use App\Queries\UserTicketQuery;
 use Illuminate\Container\Attributes\CurrentUser;
@@ -34,9 +35,15 @@ final class TicketController extends BaseTicketController
 
     public function show(Ticket $ticket): View
     {
+        $this->authorize('view', $ticket);
+
+        $messages = TicketMessage::getTicketMessages($ticket)->get();
+
         return view('customer.ticket.show', [
             'ticket' => $ticket,
+            'messages' => $messages,
         ]);
+
     }
 
     public function edit(Ticket $ticket): View

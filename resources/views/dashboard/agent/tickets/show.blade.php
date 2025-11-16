@@ -15,16 +15,16 @@
                         </div>
                         <div class="flex space-x-2">
                             <span class="px-3 py-1 rounded-full text-sm font-semibold 
-                                                                @if($ticket->priority->value === 'high') bg-red-100 text-red-800
-                                                                @elseif($ticket->priority->value === 'medium') bg-yellow-100 text-yellow-800
-                                                                @else bg-green-100 text-green-800 @endif">
+                                                                    @if($ticket->priority->value === 'high') bg-red-100 text-red-800
+                                                                    @elseif($ticket->priority->value === 'medium') bg-yellow-100 text-yellow-800
+                                                                    @else bg-green-100 text-green-800 @endif">
                                 {{ ucfirst($ticket->priority->value) }} Priority
                             </span>
                             <span class="px-3 py-1 rounded-full text-sm font-semibold 
-                                                                @if($ticket->status->value === 'open') bg-green-100 text-green-800
-                                                                @elseif($ticket->status->value === 'in_progress') bg-blue-100 text-blue-800
-                                                                @elseif($ticket->status->value === 'resolved') bg-gray-100 text-gray-800
-                                                                @else bg-red-100 text-red-800 @endif">
+                                                                    @if($ticket->status->value === 'open') bg-green-100 text-green-800
+                                                                    @elseif($ticket->status->value === 'in_progress') bg-blue-100 text-blue-800
+                                                                    @elseif($ticket->status->value === 'resolved') bg-gray-100 text-gray-800
+                                                                    @else bg-red-100 text-red-800 @endif">
                                 {{ ucfirst(str_replace('_', ' ', $ticket->status->value)) }}
                             </span>
                         </div>
@@ -98,15 +98,7 @@
                         </div>
                     @endif
 
-                    <!-- Comments Section -->
-                    <div class="bg-white shadow-lg rounded-lg p-6">
-                        <h2 class="text-lg font-semibold text-gray-800 mb-4">Comments</h2>
-                        <!-- Add comment form would go here -->
-                        <div class="text-center py-8 text-gray-500">
-                            <i class="fas fa-comments text-3xl mb-3"></i>
-                            <p>Comments feature coming soon</p>
-                        </div>
-                    </div>
+                    @include('partials.chat')
                 </div>
 
                 <!-- Sidebar -->

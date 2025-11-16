@@ -17,8 +17,6 @@ final class Ticket extends Model
 {
     use HasUuids, SoftDeletes;
 
-    public const NUMBER_OF_TICKETS = 5;
-
     /**
      * The attributes that are mass assignable.
      *

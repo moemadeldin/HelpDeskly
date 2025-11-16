@@ -15,8 +15,6 @@ final class TicketAttachment extends Model
 {
     use HasUuids, SoftDeletes;
 
-    public const ALLOWED_NUMBER_OF_ATTACHMENTS = 5;
-
     /**
      * The attributes that are mass assignable.
      *

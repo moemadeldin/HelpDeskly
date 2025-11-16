@@ -13,10 +13,13 @@ use App\Interfaces\TicketManagerInterface;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 
 abstract class BaseTicketController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __construct(private readonly TicketManagerInterface $ticketManager) {}
 
     final public function store(#[CurrentUser()] User $user, StoreTicketRequest $request): RedirectResponse

@@ -99,6 +99,16 @@ return [
             'search_path' => 'public',
             'sslmode' => 'prefer',
         ],
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'url' => env('DB_URL'),
+            'host' => env('MONGODB_HOST', '127.0.0.1'),
+            'port' => env('MONGODB_PORT', '27017'),
+            'database' => env('MONGODB_DATABASE', 'helpdeskly_chat'),
+            'options' => [
+                'database' => 'admin',
+            ],
+        ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',

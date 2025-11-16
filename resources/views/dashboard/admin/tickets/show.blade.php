@@ -15,16 +15,16 @@
                         </div>
                         <div class="flex space-x-2">
                             <span class="px-3 py-1 rounded-full text-sm font-semibold 
-                                                        @if($ticket->priority->value === 'high') bg-red-100 text-red-800
-                                                        @elseif($ticket->priority->value === 'medium') bg-yellow-100 text-yellow-800
-                                                        @else bg-green-100 text-green-800 @endif">
+                                                                @if($ticket->priority->value === 'high') bg-red-100 text-red-800
+                                                                @elseif($ticket->priority->value === 'medium') bg-yellow-100 text-yellow-800
+                                                                @else bg-green-100 text-green-800 @endif">
                                 {{ ucfirst($ticket->priority->value) }} Priority
                             </span>
                             <span class="px-3 py-1 rounded-full text-sm font-semibold 
-                                                        @if($ticket->status->value === 'open') bg-green-100 text-green-800
-                                                        @elseif($ticket->status->value === 'in_progress') bg-blue-100 text-blue-800
-                                                        @elseif($ticket->status->value === 'resolved') bg-gray-100 text-gray-800
-                                                        @else bg-red-100 text-red-800 @endif">
+                                                                @if($ticket->status->value === 'open') bg-green-100 text-green-800
+                                                                @elseif($ticket->status->value === 'in_progress') bg-blue-100 text-blue-800
+                                                                @elseif($ticket->status->value === 'resolved') bg-gray-100 text-gray-800
+                                                                @else bg-red-100 text-red-800 @endif">
                                 {{ ucfirst(str_replace('_', ' ', $ticket->status->value)) }}
                             </span>
                         </div>
@@ -69,45 +69,37 @@
                                         $extension = pathinfo($attachment->name, PATHINFO_EXTENSION);
                                         $isImage = in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp']);
                                     @endphp
-                                          @if($isImage)
-                                            <div class="text-center">
-                                                <img src="{{ asset('storage/' . $attachment->path) }}" alt="{{ $attachment->name }}"
-                                                     class="w-full h-32 object-cover rounded-lg border cursor-pointer"
-                                                    onclick="window.open('{{ $attachment->url }}', '_blank')">
-                                                <p class="text-sm mt-2 truncate">{{ $attachment->name }}</p>
+                                    @if($isImage)
+                                        <div class="text-center">
+                                            <img src="{{ asset('storage/' . $attachment->path) }}" alt="{{ $attachment->name }}"
+                                                class="w-full h-32 object-cover rounded-lg border cursor-pointer"
+                                                onclick="window.open('{{ $attachment->url }}', '_blank')">
+                                            <p class="text-sm mt-2 truncate">{{ $attachment->name }}</p>
+                                        </div>
+                                    @else
+                                        <div class="flex items-center p-3 border rounded-lg">
+                                            <i class="fas fa-file mr-3"></i>
+                                            <div class="flex-1 min-w-0">
+                                                <a href="{{ $attachment->url }}" download="{{ $attachment->name }}"
+                                                    class="font-medium truncate text-blue-600 hover:text-blue-800 hover:underline">
+                                                    {{ $attachment->name }}
+                                                </a>
+                                                <p class="text-sm text-gray-500">{{ round($attachment->size / 1024, 1) }} KB</p>
                                             </div>
-                                        @else
-                                            <div class="flex items-center p-3 border rounded-lg">
-                                                <i class="fas fa-file mr-3"></i>
-                                                    <div class="flex-1 min-w-0">
-                                                        <a href="{{ $attachment->url }}" download="{{ $attachment->name }}"
-                                                            class="font-medium truncate text-blue-600 hover:text-blue-800 hover:underline">
-                                                            {{ $attachment->name }}
-                                                        </a>
-                                                        <p class="text-sm text-gray-500">{{ round($attachment->size / 1024, 1) }} KB</p>
-                                                    </div>
-                                                    <a href="{{ $attachment->url }}" download="{{ $attachment->name }}"
-                                                        class="ml-3 text-blue-600 hover:text-blue-800">
-                                                        <i class="fas fa-download"></i>
-                                                    </a>
-                                                </div>
-                                        @endif
+                                            <a href="{{ $attachment->url }}" download="{{ $attachment->name }}"
+                                                class="ml-3 text-blue-600 hover:text-blue-800">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                        </div>
+                                    @endif
                                 @endforeach
-                                </div>
                             </div>
+                        </div>
                     @endif
 
-                    <!-- Comments Section -->
-                    <div class="bg-white shadow-lg rounded-lg p-6">
-                        <h2  class="text-lg font-semibold text-gray-800 mb-4">Comments</h2>
-                        <!-- Add comment form would go here -->
-                        <div class="text-center py-8 text-gray-500">
-                            <i class="fas fa-comments text-3xl mb-3"></i>
-                            <p>Comments feature coming soon</p>
-                        </div>
-                    </div>
+                    @include('partials.chat')
                 </div>
-            <!-- Sidebar -->
+                <!-- Sidebar -->
                 <div class="space-y-6">
                     <!-- Actions -->
                     <div class="bg-white shadow-lg rounded-lg p-6">
