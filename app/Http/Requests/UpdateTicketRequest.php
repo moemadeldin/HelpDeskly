@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Enums\TicketPriority;
+use App\Enums\TicketStatus;
 use App\Models\Ticket;
 use App\Models\TicketAttachment;
 use App\Models\User;
@@ -37,6 +38,7 @@ final class UpdateTicketRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'category_id' => ['nullable', 'string', 'exists:categories,id'],
             'priority' => ['nullable', Rule::in(TicketPriority::cases())],
+            'status' => ['sometimes', Rule::in(TicketStatus::cases())],
             'attachments' => ['nullable', 'array', 'max:'.TicketAttachment::ALLOWED_NUMBER_OF_ATTACHMENTS],
             'attachments.*' => ['file', 'mimes:png,jpg,jpeg,pdf,doc,docx,txt', 'max:10240'],
         ];

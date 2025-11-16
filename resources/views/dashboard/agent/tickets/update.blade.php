@@ -43,16 +43,30 @@
                         <input type="hidden" name="category_id" value="{{ $ticket->category_id }}">
                     </div>
 
-                    <!-- Priority (Editable) -->
+                    <!-- Priority (Read-Only) -->
                     <div>
                         <label for="priority" class="block text-sm font-medium text-gray-700 mb-2">Priority *</label>
-                        <select name="priority" id="priority"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                            required>
+                        <select id="priority"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-500 cursor-not-allowed"
+                            disabled>
                             <option value="">Select priority level</option>
                             @foreach(\App\Enums\TicketPriority::cases() as $priority)
-                                <option value="{{ $priority->value }}" {{ old('priority', $ticket->priority->value) == $priority->value ? 'selected' : '' }}>
+                                <option value="{{ $priority->value }}" {{ $ticket->priority->value == $priority->value ? 'selected' : '' }}>
                                     {{ ucfirst($priority->value) }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <input type="hidden" name="priority" value="{{ $ticket->priority->value }}">
+                    </div>
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Status *</label>
+                        <select name="status" id="status"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                            <option value="">Select current status</option>
+                            @foreach(\App\Enums\TicketStatus::cases() as $status)
+                                <option value="{{ $status->value }}" {{ old('status', $ticket->status->value) == $status->value ? 'selected' : '' }}>
+                                    {{ ucfirst($status->value) }}
                                 </option>
                             @endforeach
                         </select>
