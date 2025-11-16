@@ -34,7 +34,7 @@ final class Category extends Model
 
     public function scopeGetCategories(Builder $query): Builder
     {
-        return $query->select(['name', 'slug']);
+        return $query->select(['id', 'name', 'slug']);
     }
 
     /**

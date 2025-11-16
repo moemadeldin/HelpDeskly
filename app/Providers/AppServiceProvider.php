@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Interfaces\AuthServiceInterface;
-use App\Interfaces\ProfileManagerInterface;
+use App\Interfaces\ImageManagerInterface;
 use App\Services\AuthService;
-use App\Services\ProfileManager;
+use App\Services\ImageManager;
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
@@ -30,8 +30,8 @@ final class AppServiceProvider extends ServiceProvider
             AuthService::class
         );
         $this->app->bind(
-            ProfileManagerInterface::class,
-            ProfileManager::class
+            ImageManagerInterface::class,
+            ImageManager::class
         );
     }
 }

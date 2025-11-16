@@ -28,11 +28,11 @@
                         <div class="mt-6">
                             <h3 class="text-2xl font-semibold">Name: {{ $category->name }}</h3>
                             <div class="mt-6 flex space-x-4">
-                                <a href="{{ route('categories.edit', $category) }}"
+                                <a href="{{ route('dashboard.categories.edit', $category) }}"
                                     class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 text-lg">
                                     Update
                                 </a>
-                                <form action="{{ route('categories.destroy', $category) }}" method="POST" class="inline">
+                                <form action="{{ route('dashboard.categories.destroy', $category) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"

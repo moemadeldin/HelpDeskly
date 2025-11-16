@@ -32,7 +32,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form action="{{ route('categories.store') }}" method="POST">
+                    <form action="{{ route('dashboard.categories.store') }}" method="POST">
                         @csrf
                         <div class="mb-4">
                             <label for="name" class="block text-gray-700 font-semibold mb-2">Name</label>

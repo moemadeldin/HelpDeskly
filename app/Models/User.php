@@ -48,22 +48,27 @@ final class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === Roles::ADMIN->value;
+        return $this->role->name === Roles::ADMIN->value;
     }
 
     public function isAgent(): bool
     {
-        return $this->role === Roles::AGENT->value;
+        return $this->role->name === Roles::AGENT->value;
     }
 
     public function isCustomer(): bool
     {
-        return $this->role === Roles::CUSTOMER->value;
+        return $this->role->name === Roles::CUSTOMER->value;
     }
 
     public function scopeGetUserByEmail(Builder $query, string $email): Builder
     {
         return $query->where('email', $email);
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return trim(ucwords($this->first_name.' '.$this->last_name));
     }
 
     public function role(): BelongsTo

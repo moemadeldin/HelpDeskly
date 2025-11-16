@@ -5,7 +5,7 @@
         <div class="bg-white shadow rounded-lg p-6">
             <h1 class="text-2xl font-bold mb-4 text-gray-800">Categories</h1>
             <div class="flex justify-end mb-4">
-                <a href="{{ route('categories.create') }}"
+                <a href="{{ route('dashboard.categories.create') }}"
                     class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition">
                     <i class="fas fa-plus mr-2"></i>
                     Create Category
@@ -28,15 +28,15 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $category->name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $category->slug }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                                    <a href="{{ route('categories.show', $category) }}"
+                                    <a href="{{ route('dashboard.categories.show', $category) }}"
                                         class="inline-flex items-center px-3 py-1 text-xs font-medium bg-blue-500 text-white rounded hover:bg-blue-600">
                                         Show
                                     </a>
-                                    <a href="{{ route('categories.edit', $category) }}"
+                                    <a href="{{ route('dashboard.categories.edit', $category) }}"
                                         class="inline-flex items-center px-3 py-1 text-xs font-medium bg-yellow-500 text-white rounded hover:bg-yellow-600">
                                         Update
                                     </a>
-                                    <form action="{{ route('categories.destroy', $category) }}" method="POST"
+                                    <form action="{{ route('dashboard.categories.destroy', $category) }}" method="POST"
                                         class="inline">
                                         @csrf
                                         @method('DELETE')

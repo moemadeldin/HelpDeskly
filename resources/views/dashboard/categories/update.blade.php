@@ -32,7 +32,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form action="{{ route('categories.update', $category) }}" method="POST">
+                    <form action="{{ route('dashboard.categories.update', $category) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="mb-4">

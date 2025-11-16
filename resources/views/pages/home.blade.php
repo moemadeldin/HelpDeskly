@@ -12,7 +12,8 @@
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200">
                 <h3 class="text-xl font-semibold text-gray-800 mb-4">Ticket Management</h3>
                 <p class="text-gray-600 mb-4">Manage support tickets from customers, assign agents, and track progress.</p>
-                <a href="#" class="text-blue-600 hover:text-blue-500 font-medium transition duration-200">View Tickets</a>
+                <a href="{{ route('tickets.index') }}"
+                    class="text-blue-600 hover:text-blue-500 font-medium transition duration-200">View Tickets</a>
             </div>
 
             <!-- Knowledge Base Section -->
@@ -43,7 +44,7 @@
             </div>
         </div>
         <!-- Support Resources -->
-        <div class="mt-8 p-6 bg-blue-50 rounded-lg">
+        {{-- <div class="mt-8 p-6 bg-blue-50 rounded-lg">
             <h2 class="text-2xl font-semibold text-blue-800 mb-4">Support Resources</h2>
             <p class="text-blue-700 mb-4">Need help? Check out our support resources or contact us directly.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -65,6 +66,6 @@
                     <a href="#" class="text-blue-600 hover:text-blue-500 font-medium transition duration-200">Contact Us</a>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 @endsection

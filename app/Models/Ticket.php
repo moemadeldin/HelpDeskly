@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,8 @@ final class Ticket extends Model
 {
     use HasUuids, SoftDeletes;
 
+    public const NUMBER_OF_TICKETS = 5;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -25,7 +28,7 @@ final class Ticket extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function agent(): BelongsTo
@@ -76,6 +79,39 @@ final class Ticket extends Model
     public function isHighPriority(): bool
     {
         return $this->priority === TicketPriority::HIGH->value;
+    }
+
+    public function scopeFilterPriority(Builder $query, mixed $priority): Builder
+    {
+        if ($priority === null || $priority === '') {
+            return $query;
+        }
+        if ($priority) {
+            return $query->where('priority', $priority);
+        }
+
+        return $query;
+    }
+
+    public function scopeFilterStatus(Builder $query, mixed $status): Builder
+    {
+        if ($status === null || $status === '') {
+            return $query;
+        }
+        if ($status) {
+            return $query->where('status', $status);
+        }
+
+        return $query;
+    }
+
+    public function scopeFilterCategory(Builder $query, mixed $categoryId): Builder
+    {
+        if ($categoryId) {
+            return $query->where('category_id', $categoryId);
+        }
+
+        return $query;
     }
 
     /**

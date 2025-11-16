@@ -1,0 +1,108 @@
+@extends('layouts.app')
+
+@section('title', 'Create New Ticket - HelpDeskly')
+
+@section('content')
+    <div class="py-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6">Create New Support Ticket</h1>
+
+                <form action="{{ route('tickets.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    @csrf
+
+                    <!-- Subject -->
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject *</label>
+                        <input type="text" name="subject" id="subject" value="{{ old('subject') }}"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Brief description of your issue" required>
+                        @error('subject')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Category -->
+                    <div>
+                        <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                        <select name="category_id" id="category_id"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                            <option value="">Select a category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_id')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Priority -->
+                    <div>
+                        <label for="priority" class="block text-sm font-medium text-gray-700 mb-2">Priority *</label>
+                        <select name="priority" id="priority"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                            <option value="">Select priority level</option>
+                            @foreach(\App\Enums\TicketPriority::cases() as $priority)
+                                <option value="{{ $priority->value }}" {{ old('priority') == $priority->value ? 'selected' : '' }}>
+                                    {{ ucfirst($priority->value) }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('priority')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description *</label>
+                        <textarea name="description" id="description" rows="6"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Please provide detailed information about your issue..."
+                            required>{{ old('description') }}</textarea>
+                        @error('description')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Attachments -->
+                    <div>
+                        <label for="attachments" class="block text-sm font-medium text-gray-700 mb-2">Attachments (Optional)</label>
+                        <input type="file" 
+                            name="attachments[]" 
+                            id="attachments"
+                            multiple
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt">
+                        <p class="mt-1 text-sm text-gray-500">
+                            You can attach multiple files. Allowed types: JPG, PNG, PDF, DOC, TXT
+                        </p>
+                        @error('attachments')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                        @error('attachments.*')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end space-x-4">
+                        <a href="{{ route('tickets.index') }}"
+                            class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Cancel
+                        </a>
+                        <button type="submit"
+                            class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Create Ticket
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection

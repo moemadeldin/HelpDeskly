@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\DTOs;
+namespace App\DTOs\Tickets;
 
-use Illuminate\Http\UploadedFile;
-
-final readonly class TicketDTO
+final readonly class CreateTicketDTO
 {
     public function __construct(
         public string $subject,
         public string $description,
-        public string $category,
-        public string $password,
-        public null|UploadedFile|string $attachment,
+        public string $category_id,
+        public string $priority,
+        public ?array $attachments,
     ) {}
 
     public static function fromArray(array $data): self
@@ -21,9 +19,9 @@ final readonly class TicketDTO
         return new self(
             $data['subject'],
             $data['description'],
-            $data['category'],
-            $data['password'],
-            $data['attachment'] ?? null,
+            $data['category_id'],
+            $data['priority'],
+            $data['attachments'] ?? []
         );
     }
 
@@ -32,9 +30,8 @@ final readonly class TicketDTO
         return [
             'subject' => $this->subject,
             'description' => $this->description,
-            'category' => $this->category,
-            'password' => $this->password,
-            'attachment' => $this->attachment,
+            'category_id' => $this->category_id,
+            'priority' => $this->priority,
         ];
     }
 }

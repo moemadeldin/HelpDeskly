@@ -17,7 +17,9 @@ final class CategoryController extends Controller
     {
         $categories = Category::getCategories()->get();
 
-        return view('dashboard.categories.index', compact('categories'));
+        return view('dashboard.categories.index', [
+            'categories' => $categories,
+        ]);
     }
 
     public function create(): View
@@ -30,17 +32,21 @@ final class CategoryController extends Controller
         $dto = CategoryDTO::fromArray($request->validated());
         Category::create($dto->toArray());
 
-        return redirect()->route('categories.index')->with('success', 'Category added successfully!');
+        return redirect()->route('dashboard.categories.index')->with('success', 'Category added successfully!');
     }
 
     public function show(Category $category): View
     {
-        return view('dashboard.categories.show', compact('category'));
+        return view('dashboard.categories.show', [
+            'category' => $category,
+        ]);
     }
 
     public function edit(Category $category): View
     {
-        return view('dashboard.categories.update', compact('category'));
+        return view('dashboard.categories.update', [
+            'category' => $category,
+        ]);
     }
 
     public function update(StoreCategoryRequest $request, Category $category): RedirectResponse
@@ -48,13 +54,13 @@ final class CategoryController extends Controller
         $dto = CategoryDTO::fromArray($request->validated());
         $category->update($dto->toArray());
 
-        return redirect()->route('categories.index')->with('success', 'Category added successfully!');
+        return redirect()->route('dashboard.categories.index')->with('success', 'Category added successfully!');
     }
 
     public function destroy(Category $category): RedirectResponse
     {
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Category Deleted successfully!');
+        return redirect()->route('dashboard.categories.index')->with('success', 'Category Deleted successfully!');
     }
 }

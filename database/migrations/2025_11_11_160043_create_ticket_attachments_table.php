@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('ticket_attachments', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->string('path')->nullable();
+            $table->string('type')->nullable();
+            $table->string('name')->nullable();
+            $table->string('size')->nullable();
             $table->foreignUuid('ticket_id')
                 ->nullable()
                 ->index()
