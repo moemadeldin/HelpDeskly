@@ -46,7 +46,7 @@ final class TicketManager implements TicketManagerInterface
 
                 if ($newCount > $maxAllowed) {
                     throw ValidationException::withMessages([
-                        'attachments' => "You can only add {$maxAllowed} more attachments. Maximum is ".TicketAttachment::ALLOWED_NUMBER_OF_ATTACHMENTS.'.',
+                        'attachments' => "You can only add {$maxAllowed} more attachments. Maximum is ".Constants::$ALLOWED_NUMBER_OF_ATTACHMENTS.'.',
                     ]);
                 }
                 $this->handleAttachments($dto->attachments, $ticket);
