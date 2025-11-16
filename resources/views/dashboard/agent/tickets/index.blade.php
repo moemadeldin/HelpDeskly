@@ -77,7 +77,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#{{ $ticket->id }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $ticket->customer->full_name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        <a href="{{ route('dashboard.tickets.show', $ticket) }}" class="hover:text-blue-600">
+                                        <a href="{{ route('dashboard.agent.tickets.show', $ticket) }}" class="hover:text-blue-600">
                                             {{ Str::limit($ticket->subject, 50) }}
                                         </a>
                                     </td>
@@ -102,8 +102,8 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->created_at->format('M d, Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->updated_at->format('M d, Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <a href="{{ route('dashboard.tickets.show', $ticket) }}" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
-                                        <a href="{{ route('dashboard.tickets.edit', $ticket) }}" class="text-green-600 hover:text-green-900">Edit</a>
+                                        <a href="{{ route('dashboard.agent.tickets.show', $ticket) }}" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
+                                        <a href="{{ route('dashboard.agent.tickets.edit', $ticket) }}" class="text-green-600 hover:text-green-900">Edit</a>
                                     </td>
                                 </tr>
                             @endforeach

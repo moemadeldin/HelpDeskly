@@ -15,16 +15,14 @@ final class CategoryController extends Controller
 {
     public function index(): View
     {
-        $categories = Category::getCategories()->get();
-
-        return view('dashboard.categories.index', [
-            'categories' => $categories,
+        return view('dashboard.admin.categories.index', [
+            'categories' => Category::getCategories()->get(),
         ]);
     }
 
     public function create(): View
     {
-        return view('dashboard.categories.create');
+        return view('dashboard.admin.categories.create');
     }
 
     public function store(StoreCategoryRequest $request): RedirectResponse
@@ -37,14 +35,14 @@ final class CategoryController extends Controller
 
     public function show(Category $category): View
     {
-        return view('dashboard.categories.show', [
+        return view('dashboard.admin.categories.show', [
             'category' => $category,
         ]);
     }
 
     public function edit(Category $category): View
     {
-        return view('dashboard.categories.update', [
+        return view('dashboard.admin.categories.update', [
             'category' => $category,
         ]);
     }

@@ -15,16 +15,16 @@
                         </div>
                         <div class="flex space-x-2">
                             <span class="px-3 py-1 rounded-full text-sm font-semibold 
-                                                        @if($ticket->priority->value === 'high') bg-red-100 text-red-800
-                                                        @elseif($ticket->priority->value === 'medium') bg-yellow-100 text-yellow-800
-                                                        @else bg-green-100 text-green-800 @endif">
+                                                                @if($ticket->priority->value === 'high') bg-red-100 text-red-800
+                                                                @elseif($ticket->priority->value === 'medium') bg-yellow-100 text-yellow-800
+                                                                @else bg-green-100 text-green-800 @endif">
                                 {{ ucfirst($ticket->priority->value) }} Priority
                             </span>
                             <span class="px-3 py-1 rounded-full text-sm font-semibold 
-                                                        @if($ticket->status->value === 'open') bg-green-100 text-green-800
-                                                        @elseif($ticket->status->value === 'in_progress') bg-blue-100 text-blue-800
-                                                        @elseif($ticket->status->value === 'resolved') bg-gray-100 text-gray-800
-                                                        @else bg-red-100 text-red-800 @endif">
+                                                                @if($ticket->status->value === 'open') bg-green-100 text-green-800
+                                                                @elseif($ticket->status->value === 'in_progress') bg-blue-100 text-blue-800
+                                                                @elseif($ticket->status->value === 'resolved') bg-gray-100 text-gray-800
+                                                                @else bg-red-100 text-red-800 @endif">
                                 {{ ucfirst(str_replace('_', ' ', $ticket->status->value)) }}
                             </span>
                         </div>
@@ -115,21 +115,11 @@
                     <div class="bg-white shadow-lg rounded-lg p-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">Actions</h3>
                         <div class="space-y-3">
-                            <a href="{{ route('tickets.edit', $ticket) }}"
+                            <a href="{{ route('dashboard.agent.tickets.edit', $ticket) }}"
                                 class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                                 <i class="fas fa-edit mr-2"></i>
                                 Edit Ticket
                             </a>
-                            <form action="{{ route('tickets.destroy', $ticket) }}" method="POST" class="w-full">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                    class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"
-                                    onclick="return confirm('Are you sure you want to delete this ticket?')">
-                                    <i class="fas fa-trash mr-2"></i>
-                                    Delete Ticket
-                                </button>
-                            </form>
                         </div>
                     </div>
 

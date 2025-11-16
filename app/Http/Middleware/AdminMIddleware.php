@@ -7,6 +7,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Log;
 use Symfony\Component\HttpFoundation\Response;
 
 final class AdminMiddleware
@@ -18,8 +19,25 @@ final class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! Auth::user()->isAdmin()) {
-            abort(Response::HTTP_FORBIDDEN, 'Unauthorized');
+        // Add this check
+        if (! Auth::check()) {
+            return redirect('/login');
+        }
+
+        $user = Auth::user();
+
+        if (! $user->relationLoaded('role')) {
+            $user->load('role');
+        }
+
+        Log::info('Admin check', [
+            'user_id' => $user->id,
+            'isAdmin' => $user->isAdmin(),
+            'path' => $request->path(),
+        ]);
+
+        if (! $user->isAdmin()) {
+            abort(403, 'Unauthorized');
         }
 
         return $next($request);

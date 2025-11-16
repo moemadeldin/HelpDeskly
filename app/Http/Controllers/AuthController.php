@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\DTOs\Auth\LoginDTO;
 use App\DTOs\Auth\RegisterDTO;
+use App\Enums\ActivityStatus;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Interfaces\AuthServiceInterface;
@@ -28,6 +29,7 @@ final class AuthController extends Controller
         $user = $this->authService->register(RegisterDTO::fromArray($request->validated()));
 
         Auth::login($user);
+        $user->update(['status' => ActivityStatus::ONLINE->value]);
 
         return redirect()->route('home')->with('success', 'registered, logged in successfully');
     }
@@ -44,8 +46,9 @@ final class AuthController extends Controller
             $user = $this->authService->login($dto);
             if ($user) {
                 Auth::login($user);
+                $user->update(['status' => ActivityStatus::ONLINE->value]);
 
-                return redirect()->route('home')->with('success', 'logged in successfully');
+                return redirect($this->authService->getRedirectRoute($user))->with('success', 'logged in successfully');
             }
 
             return redirect()->route('login.get')->with('error', 'Login failed');
@@ -56,6 +59,7 @@ final class AuthController extends Controller
 
     public function logout(): RedirectResponse
     {
+        auth()->user()->update(['status' => ActivityStatus::OFFLINE->value]);
         Auth::logout();
 
         return redirect()->route('login.get')->with('success', 'logged out successfully');

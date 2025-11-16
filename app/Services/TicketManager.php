@@ -27,6 +27,7 @@ final class TicketManager implements TicketManagerInterface
             if ($dto->attachments && count($dto->attachments) > 0) {
                 $this->handleAttachments($dto->attachments, $ticket);
             }
+            $this->assignAgent($ticket);
 
             return $ticket;
         });
@@ -65,6 +66,18 @@ final class TicketManager implements TicketManagerInterface
         });
     }
 
+    public function getRedirectRoute(User $user): string
+    {
+        if ($user->isAdmin()) {
+            return route('dashboard.tickets.index');
+        }
+        if ($user->isAgent()) {
+            return route('dashboard.agent.tickets.index');
+        }
+
+        return route('tickets.index');
+    }
+
     private function handleAttachments(array $attachments, Ticket $ticket): void
     {
         $paths = $this->imageManager->uploadMultiple(
@@ -81,6 +94,16 @@ final class TicketManager implements TicketManagerInterface
                 'attachable_id' => $ticket->id,
                 'attachable_type' => Ticket::class,
             ]);
+        }
+    }
+
+    private function assignAgent(Ticket $ticket): void
+    {
+        $agent = User::assignRandomAgent()
+            ->inRandomOrder()
+            ->first();
+        if ($agent) {
+            $ticket->update(['agent_id' => $agent->id]);
         }
     }
 }

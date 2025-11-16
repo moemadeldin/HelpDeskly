@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\TicketController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('dashboard')
+Route::prefix('dashboard/admin')
     ->middleware('admin')
     ->group(function (): void {
         Route::view('', 'dashboard.layout');

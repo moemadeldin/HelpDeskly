@@ -9,15 +9,15 @@ use App\DTOs\Tickets\UpdateTicketDTO;
 use App\Http\Requests\DeleteTicketRequest;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
+use App\Interfaces\TicketManagerInterface;
 use App\Models\Ticket;
 use App\Models\User;
-use App\Services\TicketManager;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 
 abstract class BaseTicketController extends Controller
 {
-    public function __construct(private readonly TicketManager $ticketManager) {}
+    public function __construct(private readonly TicketManagerInterface $ticketManager) {}
 
     final public function store(#[CurrentUser()] User $user, StoreTicketRequest $request): RedirectResponse
     {
@@ -30,7 +30,7 @@ abstract class BaseTicketController extends Controller
     {
         $this->ticketManager->update(UpdateTicketDTO::fromArray($request->validated()), $ticket);
 
-        return redirect()->route('tickets.index')->with('success', 'Ticket updated successfully!');
+        return redirect($this->ticketManager->getRedirectRoute(auth()->user()))->with('success', 'Ticket updated successfully!');
     }
 
     final public function destroy(DeleteTicketRequest $request, Ticket $ticket): RedirectResponse

@@ -6,8 +6,10 @@ namespace App\Providers;
 
 use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\ImageManagerInterface;
+use App\Interfaces\TicketManagerInterface;
 use App\Services\AuthService;
 use App\Services\ImageManager;
+use App\Services\TicketManager;
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
@@ -32,6 +34,10 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             ImageManagerInterface::class,
             ImageManager::class
+        );
+        $this->app->bind(
+            TicketManagerInterface::class,
+            TicketManager::class
         );
     }
 }

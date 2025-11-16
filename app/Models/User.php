@@ -6,6 +6,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\ActivityStatus;
 use App\Enums\Roles;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 final class User extends Authenticatable
 {
@@ -23,6 +25,8 @@ final class User extends Authenticatable
     public const MIN_VERIFICATION_CODE = 100_000;
 
     public const MAX_VERIFICATION_CODE = 999_999;
+
+    public const MAX_AGENT_TICKETS = 5;
 
     /**
      * The attributes that are mass assignable.
@@ -61,6 +65,16 @@ final class User extends Authenticatable
         return $this->role->name === Roles::CUSTOMER->value;
     }
 
+    public function isOnline(): bool
+    {
+        return $this->status === ActivityStatus::ONLINE->value;
+    }
+
+    public function isOffline(): bool
+    {
+        return $this->status === ActivityStatus::OFFLINE->value;
+    }
+
     public function scopeGetUserByEmail(Builder $query, string $email): Builder
     {
         return $query->where('email', $email);
@@ -78,12 +92,27 @@ final class User extends Authenticatable
 
     public function customerTickets(): HasMany
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasMany(Ticket::class, 'user_id');
     }
 
     public function agentTickets(): HasMany
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasMany(Ticket::class, 'agent_id');
+    }
+
+    public function scopeAssignRandomAgent(Builder $query): Builder
+    {
+        $role = Role::where('name', Roles::AGENT->value)->value('id');
+
+        return $query->where('role_id', $role)
+            ->where('status', ActivityStatus::ONLINE->value)
+            ->where(function ($q) {
+                $q->whereHas('agentTickets', function ($subQuery) {
+                    $subQuery->select(DB::raw('COUNT(*)'))
+                        ->havingRaw('COUNT(*) < ?', [self::MAX_AGENT_TICKETS]);
+                }, '<', self::MAX_AGENT_TICKETS)
+                    ->orDoesntHave('agentTickets');
+            });
     }
 
     /**
@@ -103,6 +132,7 @@ final class User extends Authenticatable
             'password' => 'hashed',
             'is_active' => 'boolean',
             'verification_code' => 'string',
+            'status' => ActivityStatus::class,
         ];
     }
 }

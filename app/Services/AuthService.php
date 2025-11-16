@@ -41,4 +41,16 @@ final class AuthService implements AuthServiceInterface
 
         return $user;
     }
+
+    public function getRedirectRoute(User $user): string
+    {
+        if ($user->isAdmin()) {
+            return route('dashboard.tickets.index');
+        }
+        if ($user->isAgent()) {
+            return route('dashboard.agent.tickets.index');
+        }
+
+        return route('home');
+    }
 }

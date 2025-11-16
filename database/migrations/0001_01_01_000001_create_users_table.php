@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\ActivityStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -30,6 +31,9 @@ return new class extends Migration
             $table->boolean('is_active')
                 ->index()
                 ->default(true);
+            $table->string('status')
+                ->index()
+                ->default(ActivityStatus::OFFLINE->value);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

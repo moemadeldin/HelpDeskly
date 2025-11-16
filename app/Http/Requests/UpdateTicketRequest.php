@@ -22,7 +22,7 @@ final class UpdateTicketRequest extends FormRequest
         #[CurrentUser()] User $user,
         #[RouteParameter('ticket')] Ticket $ticket
     ): bool {
-        return $user->isAdmin() || $ticket->customer()->is($user);
+        return $user->isAdmin() || $ticket->agent()->is($user) || $ticket->customer()->is($user);
     }
 
     /**
