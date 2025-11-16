@@ -1,59 +1,247 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# HelpDeskly
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern, full-featured help desk and ticketing system built with Laravel 12. HelpDeskly provides a comprehensive solution for managing customer support tickets with role-based access control, real-time messaging, and intelligent agent assignment.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 🎫 Ticket Management
+- **Create and manage tickets** with subjects, descriptions, and attachments
+- **Ticket statuses**: Open, In Progress, Resolved, Closed
+- **Priority levels**: Low, Medium, High
+- **Category organization** for better ticket classification
+- **Ticket filtering** by status, priority, and category
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 👥 Role-Based Access Control
+- **Customer**: Create tickets, view own tickets, communicate with agents
+- **Agent**: Manage assigned tickets, respond to customers, update ticket status
+- **Admin**: Full system access, manage categories, view all tickets, system administration
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 💬 Real-Time Communication
+- **Live messaging** between customers and agents using Pusher
+- **Message history** stored in MongoDB for scalability
+- **Instant notifications** for new messages
 
-## Learning Laravel
+### 🤖 Intelligent Agent Assignment
+- **Automatic agent assignment** based on availability
+- **Load balancing** - assigns tickets to agents with fewer active tickets
+- **Online/offline status** tracking for agents
+- **Maximum ticket limit** per agent to ensure fair distribution
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 📎 File Attachments
+- **Support for file attachments** on tickets
+- **Secure file storage** and management
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🔐 Authentication & Security
+- **User registration and login** with email verification
+- **Password hashing** and secure authentication
+- **Session management** and remember me functionality
+- **Rate limiting** on login attempts
 
-## Laravel Sponsors
+## Technology Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Backend**: Laravel 12 (PHP 8.2+)
+- **Frontend**: Blade templates with Tailwind CSS 4
+- **Database**: 
+  - PostgreSQL for primary data (users, tickets, categories)
+  - MongoDB for ticket messages (scalable messaging)
+- **Real-time**: Pusher for WebSocket connections
+- **Build Tool**: Vite
+- **Code Quality**: Laravel Pint
 
-### Premium Partners
+## Requirements
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- PHP 8.2 or higher
+- Composer
+- Node.js and npm
+- PostgreSQL database
+- MongoDB (for ticket messages)
+- Pusher account (for real-time features)
+
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/HelpDeskly.git
+   cd HelpDeskly
+   ```
+
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
+
+3. **Install Node.js dependencies**
+   ```bash
+   npm install
+   ```
+
+4. **Environment setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. **Configure your `.env` file**
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=helpdeskly
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+
+   MONGODB_URI=mongodb://localhost:27017
+   MONGODB_DATABASE=helpdeskly
+
+   PUSHER_APP_ID=your_pusher_app_id
+   PUSHER_APP_KEY=your_pusher_key
+   PUSHER_APP_SECRET=your_pusher_secret
+   PUSHER_APP_CLUSTER=your_pusher_cluster
+   ```
+
+6. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+7. **Seed the database** (optional)
+   ```bash
+   php artisan db:seed
+   ```
+
+8. **Build frontend assets**
+   ```bash
+   npm run build
+   ```
+
+## Development
+
+### Quick Setup
+Use the provided setup script:
+```bash
+composer run setup
+```
+
+### Development Server
+Run the development server with hot reloading:
+```bash
+composer run dev
+```
+
+This command runs:
+- Laravel development server
+- Queue worker
+- Vite dev server
+
+### Running Tests
+```bash
+composer run test
+```
+
+## Project Structure
+
+```
+HelpDeskly/
+├── app/
+│   ├── Actions/          # Action classes for business logic
+│   ├── Console/          # Artisan commands
+│   ├── DTOs/             # Data Transfer Objects
+│   ├── Enums/            # Enum classes (Roles, TicketStatus, etc.)
+│   ├── Events/           # Event classes
+│   ├── Http/
+│   │   ├── Controllers/  # Application controllers
+│   │   ├── Middleware/   # Custom middleware
+│   │   ├── Requests/     # Form request validation
+│   │   └── Resources/    # API resources
+│   ├── Interfaces/       # Service interfaces
+│   ├── Models/           # Eloquent models
+│   ├── Policies/         # Authorization policies
+│   ├── Providers/        # Service providers
+│   ├── Queries/          # Query builder classes
+│   ├── Services/         # Business logic services
+│   ├── Traits/           # Reusable traits
+│   └── Utilities/        # Utility classes
+├── database/
+│   ├── migrations/       # Database migrations
+│   └── seeders/          # Database seeders
+├── resources/
+│   ├── views/            # Blade templates
+│   ├── css/              # Stylesheets
+│   └── js/               # JavaScript files
+└── routes/               # Route definitions
+```
+
+## Key Components
+
+### Models
+- **User**: Represents users with roles (Customer, Agent, Admin)
+- **Ticket**: Main ticket entity with status, priority, and relationships
+- **TicketMessage**: Messages within tickets (stored in MongoDB)
+- **Category**: Ticket categories for organization
+- **TicketAttachment**: File attachments for tickets
+
+### Services
+- **AuthService**: Handles authentication logic
+- **TicketManager**: Manages ticket operations and agent assignment
+- **ImageManager**: Handles image uploads and processing
+
+### Enums
+- **Roles**: Customer, Agent, Admin
+- **TicketStatus**: Open, In Progress, Resolved, Closed
+- **TicketPriority**: Low, Medium, High
+- **ActivityStatus**: Online, Offline
+
+## Usage
+
+### For Customers
+1. Register an account or log in
+2. Create a new ticket with subject, description, and category
+3. Attach files if needed
+4. Communicate with assigned agents through the messaging system
+5. Track ticket status and updates
+
+### For Agents
+1. Log in to the agent dashboard
+2. View assigned tickets
+3. Update ticket status and priority
+4. Respond to customer messages
+5. Manage ticket lifecycle
+
+### For Admins
+1. Access the admin dashboard
+2. Manage ticket categories
+3. View all tickets across the system
+4. Monitor system activity
+5. Manage users and roles
+
+## Configuration
+
+### Agent Assignment
+The system automatically assigns tickets to available agents based on:
+- Agent online status
+- Current ticket load (maximum tickets per agent)
+- Load balancing algorithm
+
+Configure the maximum tickets per agent in `app/Utilities/Constants.php`.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact the development team.
+
+---
+
+Built with ❤️ using Laravel
