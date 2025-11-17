@@ -56,7 +56,7 @@
                             <option value="">Select priority level</option>
                             @foreach(\App\Enums\TicketPriority::cases() as $priority)
                                 <option value="{{ $priority->value }}" {{ old('priority', $ticket->priority->value) == $priority->value ? 'selected' : '' }}>
-                                    {{ ucfirst($priority->value) }}
+                                    {{ $priority->label() }}
                                 </option>
                             @endforeach
                         </select>

@@ -74,7 +74,6 @@ final class User extends Authenticatable
     {
         return $query->where('email', $email);
     }
-
     public function getFullNameAttribute(): string
     {
         return trim(ucwords($this->first_name.' '.$this->last_name));
@@ -101,8 +100,8 @@ final class User extends Authenticatable
 
         return $query->where('role_id', $role)
             ->where('status', ActivityStatus::ONLINE->value)
-            ->where(function ($q) {
-                $q->whereHas('agentTickets', function ($subQuery) {
+            ->where(function (Builder $q): void {
+                $q->whereHas('agentTickets', function (Builder $subQuery): void {
                     $subQuery->select(DB::raw('COUNT(*)'))
                         ->havingRaw('COUNT(*) < ?', [Constants::$MAX_AGENT_TICKETS]);
                 }, '<', Constants::$MAX_AGENT_TICKETS)

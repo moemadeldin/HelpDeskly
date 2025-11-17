@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Ticket;
 
 use App\Enums\TicketPriority;
 use App\Utilities\Constants;

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Ticket;
 
 use App\DTOs\Tickets\CreateTicketDTO;
 use App\DTOs\Tickets\UpdateTicketDTO;
-use App\Http\Requests\DeleteTicketRequest;
-use App\Http\Requests\StoreTicketRequest;
-use App\Http\Requests\UpdateTicketRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Ticket\DeleteTicketRequest;
+use App\Http\Requests\Ticket\StoreTicketRequest;
+use App\Http\Requests\Ticket\UpdateTicketRequest;
 use App\Interfaces\TicketManagerInterface;
 use App\Models\Ticket;
 use App\Models\User;

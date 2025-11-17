@@ -36,7 +36,7 @@
                     <label for="password" class="block text-sm font-medium text-gray-700">
                         <i class="fas fa-lock text-gray-400 mr-2"></i>Password
                     </label>
-                    <a href="#" class="text-sm text-blue-600 hover:text-blue-500 transition duration-200">
+                    <a href="{{ route('forgot-password.get') }}" class="text-sm text-blue-600 hover:text-blue-500 transition duration-200">
                         Forgot password?
                     </a>
                 </div>

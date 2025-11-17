@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Customer;
 
-use App\Http\Controllers\BaseTicketController;
+use App\Http\Controllers\Ticket\BaseTicketController;
 use App\Http\Requests\FilterRequest;
 use App\Models\Category;
 use App\Models\Ticket;

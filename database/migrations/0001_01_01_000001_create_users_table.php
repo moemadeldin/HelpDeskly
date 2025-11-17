@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('verification_code')->index()->nullable();
+            $table->timestamp('verification_code_expire_at')->index()->nullable();
             $table->string('password')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('avatar')->nullable();
@@ -30,7 +32,7 @@ return new class extends Migration
                 ->restrictOnDelete();
             $table->boolean('is_active')
                 ->index()
-                ->default(true);
+                ->default(false);
             $table->string('status')
                 ->index()
                 ->default(ActivityStatus::OFFLINE->value);

@@ -11,7 +11,7 @@
                     <div
                         class="flex items-end space-x-2 {{ $message->sender_id === auth()->id() ? 'flex-row-reverse space-x-reverse' : '' }}">
                         <div
-                            class="flex-shrink-0 w-8 h-8 rounded-full {{ $message->role->value === 'customer' ? 'bg-blue-500' : ($message->role->value === 'agent' ? 'bg-green-500' : 'bg-purple-500') }} flex items-center justify-center text-white text-sm font-semibold">
+                            class="flex-shrink-0 w-8 h-8 rounded-full {{ $message->role->value === \App\Enums\Roles::CUSTOMER->value ? 'bg-blue-500' : ($message->role->value === \App\Enums\Roles::AGENT->value ? 'bg-green-500' : 'bg-purple-500') }} flex items-center justify-center text-white text-sm font-semibold">
                             {{ strtoupper(substr($message->role->value, 0, 1)) }}
                         </div>
                         <div>
@@ -41,7 +41,7 @@
         @endforelse
     </div>
 
-    @if(!auth()->user()->isAdmin())
+    @if(!auth()->user()->isAdmin() && !in_array($ticket->status->value, [\App\Enums\TicketStatus::CLOSED->value, \App\Enums\TicketStatus::RESOLVED->value]))
         <form id="chat-form-{{ $ticket->id }}" class="chat-form px-6 py-4 border-t border-gray-200 bg-white">
             @csrf
             <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
@@ -63,11 +63,12 @@
         <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
             <p class="text-sm text-gray-600 text-center">
                 <i class="fas fa-eye mr-2"></i>
-                You are viewing this conversation in read-only mode.
+                Ticket is Closed or Resolved, You are viewing this conversation in read-only mode.
             </p>
         </div>
     @endif
 </div>
+
 
 <script>
     function sendChatMessage(ticketId) {

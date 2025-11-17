@@ -11,6 +11,7 @@ final readonly class UpdateTicketDTO
         public ?string $description,
         public ?string $category_id,
         public ?string $priority,
+        public ?string $status,
         public ?array $attachments,
     ) {}
 
@@ -21,6 +22,7 @@ final readonly class UpdateTicketDTO
             $data['description'],
             $data['category_id'],
             $data['priority'],
+            $data['status'],
             array_key_exists('attachments', $data) ? $data['attachments'] : null
         );
     }
@@ -32,6 +34,7 @@ final readonly class UpdateTicketDTO
             'description' => $this->description,
             'category_id' => $this->category_id,
             'priority' => $this->priority,
+            'status' => $this->status,
         ];
     }
 }

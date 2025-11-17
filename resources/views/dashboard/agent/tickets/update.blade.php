@@ -52,7 +52,7 @@
                             <option value="">Select priority level</option>
                             @foreach(\App\Enums\TicketPriority::cases() as $priority)
                                 <option value="{{ $priority->value }}" {{ $ticket->priority->value == $priority->value ? 'selected' : '' }}>
-                                    {{ ucfirst($priority->value) }}
+                                    {{ $priority->label() }}
                                 </option>
                             @endforeach
                         </select>
@@ -63,13 +63,16 @@
                         <select name="status" id="status"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             required>
-                            <option value="">Select current status</option>
+                            <option value="">Select Status level</option>
                             @foreach(\App\Enums\TicketStatus::cases() as $status)
                                 <option value="{{ $status->value }}" {{ old('status', $ticket->status->value) == $status->value ? 'selected' : '' }}>
-                                    {{ ucfirst($status->value) }}
+                                    {{ $status->label() }}
                                 </option>
                             @endforeach
                         </select>
+                        @error('status')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Description (Read-Only) -->

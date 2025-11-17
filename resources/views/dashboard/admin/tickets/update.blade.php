@@ -61,7 +61,7 @@
                         <option value="">Select priority level</option>
                         @foreach(\App\Enums\TicketPriority::cases() as $priority)
                             <option value="{{ $priority->value }}" {{ old('priority', $ticket->priority->value) == $priority->value ? 'selected' : '' }}>
-                                {{ ucfirst($priority->value) }}
+                                {{ $priority->label()) }}
                             </option>
                         @endforeach
                     </select>
@@ -83,29 +83,6 @@
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
-
-                <!-- Current Attachments -->
-                {{-- @if($ticket->attachments->count() > 0)
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Current Attachments</label>
-                        <div class="space-y-2">
-                            @foreach($ticket->attachments as $attachment)
-                                <div class="flex items-center justify-between p-2 border border-gray-200 rounded">
-                                    <div class="flex items-center">
-                                        <i class="fas fa-paperclip text-gray-400 mr-2"></i>
-                                        <span class="text-sm text-gray-700">{{ $attachment->filename }}</span>
-                                    </div>
-                                    <a href="{{ route('attachments.download', $attachment) }}" 
-                                       class="text-blue-600 hover:text-blue-500 text-sm">
-                                        Download
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif --}}
-
-                <!-- New Attachments -->
                 <div>
                     <label for="attachments" class="block text-sm font-medium text-gray-700 mb-2">Add New Attachments</label>
                     <input type="file" 

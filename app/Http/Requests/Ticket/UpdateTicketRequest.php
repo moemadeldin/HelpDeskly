@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Ticket;
 
 use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
@@ -38,7 +38,7 @@ final class UpdateTicketRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'category_id' => ['nullable', 'string', 'exists:categories,id'],
             'priority' => ['nullable', Rule::in(TicketPriority::cases())],
-            'status' => ['sometimes', Rule::in(TicketStatus::cases())],
+            'status' => ['nullable', Rule::in(TicketStatus::cases())],
             'attachments' => ['nullable', 'array', 'max:'.Constants::$ALLOWED_NUMBER_OF_ATTACHMENTS],
             'attachments.*' => ['file', 'mimes:png,jpg,jpeg,pdf,doc,docx,txt', 'max:10240'],
         ];

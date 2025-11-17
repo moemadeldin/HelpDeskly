@@ -10,6 +10,8 @@ final class Constants
 
     public static $MAX_VERIFICATION_CODE = 999_999;
 
+    public static $VERIFICATION_CODE_TIME_EXPIRATION = 30;
+
     public static $NUMBER_OF_TICKETS = 5;
 
     public static $ALLOWED_NUMBER_OF_ATTACHMENTS = 5;

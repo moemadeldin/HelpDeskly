@@ -18,7 +18,7 @@
                         <option value="">All Statuses</option>
                         @foreach(\App\Enums\TicketStatus::cases() as $status)
                             <option value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>
-                                {{ ucfirst($status->value) }}
+                                {{ $status->label() }}
                             </option>
                         @endforeach
                     </select>
@@ -29,7 +29,7 @@
                         <option value="">All Priorities</option>
                         @foreach(\App\Enums\TicketPriority::cases() as $priority)
                             <option value="{{ $priority->value }}" {{ request('priority') == $priority->value ? 'selected' : '' }}>
-                                {{ ucfirst($priority->value) }}
+                                {{ $priority->label() }}
                             </option>
                         @endforeach
                     </select>
@@ -84,19 +84,19 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->category->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            @if($ticket->priority->value === 'high') bg-red-100 text-red-800
-                                            @elseif($ticket->priority->value === 'medium') bg-yellow-100 text-yellow-800
+                                            @if($ticket->priority->value === App\Enums\TicketPriority::HIGH->value) bg-red-100 text-red-800
+                                            @elseif($ticket->priority->value === App\Enums\TicketPriority::MEDIUM->value) bg-yellow-100 text-yellow-800
                                             @else bg-green-100 text-green-800 @endif">
-                                            {{ ucfirst($ticket->priority->value) }}
+                                            {{ $ticket->priority->label() }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            @if($ticket->status->value === 'open') bg-green-100 text-green-800
-                                            @elseif($ticket->status->value === 'in_progress') bg-blue-100 text-blue-800
-                                            @elseif($ticket->status->value === 'resolved') bg-gray-100 text-gray-800
+                                            @if($ticket->status->value === App\Enums\TicketStatus::OPEN->value) bg-green-100 text-green-800
+                                            @elseif($ticket->status->value === App\Enums\TicketStatus::IN_PROGRESS->value) bg-blue-100 text-blue-800
+                                            @elseif($ticket->status->value === App\Enums\TicketStatus::RESOLVED->value) bg-gray-100 text-gray-800
                                             @else bg-red-100 text-red-800 @endif">
-                                            {{ ucfirst(str_replace('_', ' ', $ticket->status->value)) }}
+                                            {{ str_replace('_', ' ', $ticket->status->label()) }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->created_at->format('M d, Y') }}</td>

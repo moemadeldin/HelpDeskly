@@ -15,17 +15,17 @@
                         </div>
                         <div class="flex space-x-2">
                             <span class="px-3 py-1 rounded-full text-sm font-semibold 
-                                                                @if($ticket->priority->value === 'high') bg-red-100 text-red-800
-                                                                @elseif($ticket->priority->value === 'medium') bg-yellow-100 text-yellow-800
-                                                                @else bg-green-100 text-green-800 @endif">
-                                {{ ucfirst($ticket->priority->value) }} Priority
+                                                                    @if($ticket->priority->value === App\Enums\TicketPriority::HIGH->value) bg-red-100 text-red-800
+                                                                    @elseif($ticket->priority->value === App\Enums\TicketPriority::MEDIUM->value) bg-yellow-100 text-yellow-800
+                                                                    @else bg-green-100 text-green-800 @endif">
+                                {{ $ticket->priority->label() }} Priority
                             </span>
                             <span class="px-3 py-1 rounded-full text-sm font-semibold 
-                                                                @if($ticket->status->value === 'open') bg-green-100 text-green-800
-                                                                @elseif($ticket->status->value === 'in_progress') bg-blue-100 text-blue-800
-                                                                @elseif($ticket->status->value === 'resolved') bg-gray-100 text-gray-800
-                                                                @else bg-red-100 text-red-800 @endif">
-                                {{ ucfirst(str_replace('_', ' ', $ticket->status->value)) }}
+                                                                    @if($ticket->status->value === App\Enums\TicketStatus::OPEN->value) bg-green-100 text-green-800
+                                                                    @elseif($ticket->status->value === App\Enums\TicketStatus::IN_PROGRESS->value) bg-blue-100 text-blue-800
+                                                                    @elseif($ticket->status->value === App\Enums\TicketStatus::RESOLVED->value) bg-gray-100 text-gray-800
+                                                                    @else bg-red-100 text-red-800 @endif">
+                                {{ str_replace('_', ' ', $ticket->status->label()) }}
                             </span>
                         </div>
                     </div>

@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\UpdateProfileAction;
 use App\DTOs\Auth\UpdateProfileDTO;
-use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Interfaces\ImageManagerInterface;
 use App\Models\User;
 use Illuminate\Container\Attributes\CurrentUser;
