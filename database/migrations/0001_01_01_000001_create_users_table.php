@@ -32,7 +32,7 @@ return new class extends Migration
                 ->restrictOnDelete();
             $table->boolean('is_active')
                 ->index()
-                ->default(false);
+                ->default(true);
             $table->string('status')
                 ->index()
                 ->default(ActivityStatus::OFFLINE->value);

@@ -21,6 +21,7 @@ final class AuthService implements AuthServiceInterface
             $user = User::create($dto->toArray());
             $roleId = Role::getRoleIdByName(Roles::CUSTOMER->value)->value('id');
             $user->update([
+                'email_verified_at' => now(),
                 'role_id' => $roleId,
             ]);
 

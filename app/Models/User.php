@@ -74,6 +74,7 @@ final class User extends Authenticatable
     {
         return $query->where('email', $email);
     }
+
     public function getFullNameAttribute(): string
     {
         return trim(ucwords($this->first_name.' '.$this->last_name));
@@ -126,6 +127,7 @@ final class User extends Authenticatable
             'password' => 'hashed',
             'is_active' => 'boolean',
             'verification_code' => 'string',
+            'verification_code_expire_at' => 'datetime',
             'status' => ActivityStatus::class,
         ];
     }

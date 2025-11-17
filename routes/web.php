@@ -18,8 +18,8 @@ Route::middleware('guest')->group(function (): void {
 
     Route::get('/forgot-password', [PasswordRecoveryController::class, 'forgotPasswordForm'])->name('forgot-password.get');
     Route::post('/forgot-password', [PasswordRecoveryController::class, 'forgotPassword'])->name('forgot-password.post');
-Route::get('/reset-password', [PasswordRecoveryController::class, 'resetPasswordForm'])->name('reset-password.get');
-Route::post('/reset-password', [PasswordRecoveryController::class, 'resetPassword'])->name('reset-password.post');
+    Route::get('/reset-password', [PasswordRecoveryController::class, 'resetPasswordForm'])->name('reset-password.get');
+    Route::post('/reset-password', [PasswordRecoveryController::class, 'resetPassword'])->name('reset-password.post');
 
 });
 

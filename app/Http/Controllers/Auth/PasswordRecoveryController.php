@@ -35,7 +35,7 @@ final class PasswordRecoveryController extends Controller
     public function resetPasswordForm(Request $request): View
     {
         return view('auth.reset-password', [
-            'email' => $request->query('email')
+            'email' => $request->query('email'),
         ]);
     }
 

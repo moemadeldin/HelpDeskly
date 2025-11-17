@@ -29,7 +29,7 @@ final class PasswordRecoveryService implements PasswordRecoveryServiceInterface
                 'verification_code' => $code,
                 'verification_code_expire_at' => $codeExpiration,
             ]);
-            event(new PasswordResetLinkCreated($user,  $code, $codeExpiration));
+            event(new PasswordResetLinkCreated($user, $code, $codeExpiration));
 
             return $user;
         });
