@@ -9,26 +9,30 @@
                         <i class="fas fa-laptop-code mr-2"></i> Categories
                     </a>
                 </li>
+                <li class="flex items-center hover:bg-blue-700 p-2 rounded cursor-pointer">
+                    <a href="{{ route('dashboard.tickets.index') }}" class="flex items-center text-white w-full">
+                        <i class="fas fa-graduation-cap mr-2"></i> Tickets
+                    </a>
+                </li>
+                <div class="mt-8">
+                    <h3 class="text-sm uppercase text-blue-200 mb-3">More Features</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center hover:bg-blue-700 p-2 rounded cursor-pointer">
+                            <a href="#" class="flex items-center text-white w-full">
+                                <i class="fa-solid fa-users mr-2"></i> Users
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             @endif
-
-            <li class="flex items-center hover:bg-blue-700 p-2 rounded cursor-pointer">
-                <a href="{{ route('dashboard.tickets.index') }}" class="flex items-center text-white w-full">
-                    <i class="fas fa-graduation-cap mr-2"></i> Tickets
-                </a>
-            </li>
         </ul>
     </div>
 
-    @if(auth()->user()->isAdmin())
-        <div class="mt-8">
-            <h3 class="text-sm uppercase text-blue-200 mb-3">More Features</h3>
-            <ul class="space-y-2">
-                <li class="flex items-center hover:bg-blue-700 p-2 rounded cursor-pointer">
-                    <a href="#" class="flex items-center text-white w-full">
-                        <i class="fa-solid fa-users mr-2"></i> Users
-                    </a>
-                </li>
-            </ul>
-        </div>
+    @if(auth()->user()->isAgent())
+        <li class="flex items-center hover:bg-blue-700 p-2 rounded cursor-pointer">
+            <a href="{{ route('dashboard.agent.tickets.index') }}" class="flex items-center text-white w-full">
+                <i class="fas fa-graduation-cap mr-2"></i> Tickets
+            </a>
+        </li>
     @endif
 </div>

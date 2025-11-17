@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\PasswordRecoveryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 
-foreach (['admin', 'agent', 'auth'] as $file) {
+foreach (['admin', 'agent', 'auth', 'customer'] as $file) {
     require __DIR__."/{$file}.php";
 }
 Route::middleware('guest')->group(function (): void {

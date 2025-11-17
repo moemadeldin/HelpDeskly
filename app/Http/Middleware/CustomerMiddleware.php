@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-final class AdminMiddleware
+final class CustomerMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ final class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! Auth::user()->isAdmin()) {
+        if (! Auth::user()->isCustomer()) {
             abort(Response::HTTP_FORBIDDEN, 'Unauthorized');
         }
 

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ProfileController;
-use App\Http\Controllers\Customer\TicketController;
-use App\Http\Controllers\Ticket\TicketMessageController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function (): void {
@@ -16,8 +15,8 @@ Route::middleware('auth')->group(function (): void {
             Route::put('', 'update')->name('profile.update');
             Route::delete('', 'destroy')->name('profile.destroy');
         });
-    Route::resource('/tickets', TicketController::class);
-
-    Route::get('/tickets/{ticket}/messages', [TicketMessageController::class, 'show']);
-    Route::post('/tickets/{ticket}/messages', [TicketMessageController::class, 'store'])->name('message.post');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+    Route::post('/notifications/{id}/destroy', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
 });

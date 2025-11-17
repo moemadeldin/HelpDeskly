@@ -6,10 +6,13 @@ namespace App\Services;
 
 use App\DTOs\Tickets\CreateTicketDTO;
 use App\DTOs\Tickets\UpdateTicketDTO;
+use App\Enums\TicketStatus;
 use App\Interfaces\TicketManagerInterface;
 use App\Models\Ticket;
 use App\Models\TicketAttachment;
 use App\Models\User;
+use App\Notifications\TicketAssignedNotification;
+use App\Notifications\TicketStatusChangedNotification;
 use App\Utilities\Constants;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -37,20 +40,11 @@ final class TicketManager implements TicketManagerInterface
     public function update(UpdateTicketDTO $dto, Ticket $ticket): Ticket
     {
         return DB::transaction(function () use ($dto, $ticket): Ticket {
-
+            $oldStatus = $ticket->status;
             $ticket->update($dto->toArray());
-            if ($dto->attachments && count($dto->attachments) > 0) {
-                $currCount = $ticket->attachments->count();
-                $newCount = count($dto->attachments);
-                $maxAllowed = Constants::$ALLOWED_NUMBER_OF_ATTACHMENTS - $currCount;
 
-                if ($newCount > $maxAllowed) {
-                    throw ValidationException::withMessages([
-                        'attachments' => "You can only add {$maxAllowed} more attachments. Maximum is ".Constants::$ALLOWED_NUMBER_OF_ATTACHMENTS.'.',
-                    ]);
-                }
-                $this->handleAttachments($dto->attachments, $ticket);
-            }
+            $this->handleStatusChange($ticket, $oldStatus);
+            $this->handleAttachmentsUpdate($dto, $ticket);
 
             return $ticket;
         });
@@ -98,6 +92,36 @@ final class TicketManager implements TicketManagerInterface
         }
     }
 
+    private function handleAttachmentsUpdate(UpdateTicketDTO $dto, Ticket $ticket): void
+    {
+        if ($dto->attachments && count($dto->attachments) > 0) {
+            $currCount = $ticket->attachments->count();
+            $newCount = count($dto->attachments);
+            $maxAllowed = Constants::$ALLOWED_NUMBER_OF_ATTACHMENTS - $currCount;
+
+            if ($newCount > $maxAllowed) {
+                throw ValidationException::withMessages([
+                    'attachments' => "You can only add {$maxAllowed} more attachments. Maximum is ".Constants::$ALLOWED_NUMBER_OF_ATTACHMENTS.'.',
+                ]);
+            }
+            $this->handleAttachments($dto->attachments, $ticket);
+        }
+    }
+
+    private function handleStatusChange(Ticket $ticket, string|TicketStatus $oldStatus): void
+    {
+        if ($ticket->status !== $oldStatus) {
+            $oldStatusString = $oldStatus instanceof TicketStatus ? $oldStatus->value : $oldStatus;
+            $newStatusString = $ticket->status instanceof TicketStatus ? $ticket->status->value : $ticket->status;
+
+            $ticket->customer->notify(new TicketStatusChangedNotification(
+                $ticket,
+                $oldStatusString,
+                $newStatusString
+            ));
+        }
+    }
+
     private function assignAgent(Ticket $ticket): void
     {
         $agent = User::assignRandomAgent()
@@ -105,6 +129,7 @@ final class TicketManager implements TicketManagerInterface
             ->first();
         if ($agent) {
             $ticket->update(['agent_id' => $agent->id]);
+            $agent->notify(new TicketAssignedNotification($ticket));
         }
     }
 }

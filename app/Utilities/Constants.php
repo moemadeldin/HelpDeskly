@@ -14,6 +14,8 @@ final class Constants
 
     public static $NUMBER_OF_TICKETS = 5;
 
+    public static $NUMBER_OF_NOTIFICATIONS = 20;
+
     public static $ALLOWED_NUMBER_OF_ATTACHMENTS = 5;
 
     public static $MAX_AGENT_TICKETS = 5;
