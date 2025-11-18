@@ -12,6 +12,7 @@ use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Interfaces\PasswordRecoveryServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\View\View;
 
 final class PasswordRecoveryController extends Controller
@@ -35,7 +36,7 @@ final class PasswordRecoveryController extends Controller
     public function resetPasswordForm(Request $request): View
     {
         return view('auth.reset-password', [
-            'email' => $request->query('email'),
+            'email' => Crypt::decrypt($request->query('email')),
         ]);
     }
 

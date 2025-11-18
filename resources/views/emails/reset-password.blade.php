@@ -88,7 +88,7 @@
                             <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
                                 <tr>
                                     <td align="center">
-                                        <a href="{{ url('/reset-password') }}?email={{ urlencode($user->email) }}"
+                                        <a href="{{ url('/reset-password') }}?email={{ Illuminate\Support\Facades\Crypt::encrypt($user->email) }}"
                                             style="background-color: #2563eb; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
                                             🔄 Go to Reset Password
                                         </a>
