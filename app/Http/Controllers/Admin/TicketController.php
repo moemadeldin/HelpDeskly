@@ -27,6 +27,12 @@ final class TicketController extends BaseTicketController
         $this->authorize('view', $ticket);
 
         $messages = TicketMessage::getTicketMessages($ticket)->get();
+        $ticket->load([
+            'category',
+            'customer',
+            'agent',
+            'attachments',
+        ]);
 
         return view('dashboard.admin.tickets.show', [
             'ticket' => $ticket,

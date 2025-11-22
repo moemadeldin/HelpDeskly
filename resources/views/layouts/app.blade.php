@@ -23,15 +23,19 @@
                     <a href={{ route('home') }} class="text-xl font-bold">HelpDeskly</a>
                 </div>
                 @if(Auth::check())
+                    @php
+                        // LOAD NOTIFICATIONS ONCE - FIXES DUPLICATE QUERIES
+                        $userNotifications = auth()->user()->notifications;
+                        $unreadCount = $userNotifications->where('read_at', null)->count();
+                        $recentNotifications = $userNotifications->take(10);
+                    @endphp
+
                     <div class="flex items-center space-x-6">
                         <!-- Notifications Bell -->
                         <div class="relative">
-                        <button id="notifications-btn"
+                            <button id="notifications-btn"
                                 class="relative p-2 text-white hover:text-blue-200 transition-colors">
                                 <i class="fas fa-bell text-lg"></i>
-                                @php
-                                    $unreadCount = auth()->user()->unreadNotifications->count();
-                                @endphp
                                 @if($unreadCount > 0)
                                     <span id="notification-count"
                                         class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
@@ -59,13 +63,14 @@
                                     </div>
                                 </div>
                                 <div id="notifications-list" class="max-h-96 overflow-y-auto">
-                                    @forelse(auth()->user()->notifications->take(10) as $notification)
+                                    @forelse($recentNotifications as $notification)
                                         <div class="p-3 border-b hover:bg-gray-50 notification-item {{ $notification->unread() ? 'bg-blue-50' : '' }}"
                                             data-notification-id="{{ $notification->id }}">
                                             <div class="flex justify-between items-start">
                                                 <div class="flex-1">
                                                     <p class="text-sm text-gray-800">
-                                                        {{ $notification->data['message'] ?? 'New notification' }}</p>
+                                                        {{ $notification->data['message'] ?? 'New notification' }}
+                                                    </p>
                                                     <p class="text-xs text-gray-500 mt-1">
                                                         {{ $notification->created_at->diffForHumans() }}
                                                     </p>
@@ -239,18 +244,18 @@
                     const toast = document.createElement('div');
                     toast.className = 'fixed top-4 right-4 bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow-lg z-50 max-w-sm';
                     toast.innerHTML = `
-                <div class="flex items-start">
-                    <i class="fas fa-bell text-blue-500 mt-1 mr-3"></i>
-                    <div class="flex-1">
-                        <div class="font-semibold text-gray-800 text-sm">New Notification</div>
-                        <div class="text-gray-600 text-sm mt-1">${notification.message || 'You have a new notification'}</div>
-                        ${notification.url ? `<a href="${notification.url}" class="text-blue-600 text-xs mt-2 inline-block">View</a>` : ''}
+                    <div class="flex items-start">
+                        <i class="fas fa-bell text-blue-500 mt-1 mr-3"></i>
+                        <div class="flex-1">
+                            <div class="font-semibold text-gray-800 text-sm">New Notification</div>
+                            <div class="text-gray-600 text-sm mt-1">${notification.message || 'You have a new notification'}</div>
+                            ${notification.url ? `<a href="${notification.url}" class="text-blue-600 text-xs mt-2 inline-block">View</a>` : ''}
+                        </div>
+                        <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600 ml-2">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-                    <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600 ml-2">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
+                `;
                     document.body.appendChild(toast);
 
                     // Auto remove after 5 seconds
