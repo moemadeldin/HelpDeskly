@@ -11,15 +11,19 @@ foreach (['admin', 'agent', 'auth', 'customer'] as $file) {
     require __DIR__."/{$file}.php";
 }
 Route::middleware('guest')->group(function (): void {
-    Route::get('register', [AuthController::class, 'registerForm'])->name('register');
-    Route::post('register', [AuthController::class, 'register']);
-    Route::get('login', [AuthController::class, 'loginForm'])->name('login.get');
-    Route::post('login', [AuthController::class, 'login'])->name('login.post')->middleware('throttle:4,1');
 
-    Route::get('/forgot-password', [PasswordRecoveryController::class, 'forgotPasswordForm'])->name('forgot-password.get');
-    Route::post('/forgot-password', [PasswordRecoveryController::class, 'forgotPassword'])->name('forgot-password.post');
-    Route::get('/reset-password', [PasswordRecoveryController::class, 'resetPasswordForm'])->name('reset-password.get');
-    Route::post('/reset-password', [PasswordRecoveryController::class, 'resetPassword'])->name('reset-password.post');
+    Route::controller(AuthController::class)->group(function (): void {
+        Route::get('register', 'registerForm')->name('register');
+        Route::post('register', 'register');
+        Route::get('login', 'loginForm')->name('login.get');
+        Route::post('login', 'login')->name('login.post')->middleware('throttle:4,1');
+    });
+    Route::controller(PasswordRecoveryController::class)->group(function (): void {
+        Route::get('/forgot-password', 'forgotPasswordForm')->name('forgot-password.get');
+        Route::post('/forgot-password', 'forgotPassword')->name('forgot-password.post');
+        Route::get('/reset-password', 'resetPasswordForm')->name('reset-password.get');
+        Route::post('/reset-password', 'resetPassword')->name('reset-password.post');
+    });
 
 });
 

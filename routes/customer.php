@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('customer')->group(function (): void {
     Route::resource('/tickets', TicketController::class);
-    Route::get('/tickets/{ticket}/messages', [TicketMessageController::class, 'show']);
-    Route::post('/tickets/{ticket}/messages', [TicketMessageController::class, 'store'])->name('message.post');
+    Route::controller(TicketMessageController::class)->group(function (): void {
+        Route::get('/tickets/{ticket}/messages', 'show');
+        Route::post('/tickets/{ticket}/messages', 'store')->name('message.post');
+    });
 });

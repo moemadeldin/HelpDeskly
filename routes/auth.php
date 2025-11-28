@@ -15,8 +15,12 @@ Route::middleware('auth')->group(function (): void {
             Route::put('', 'update')->name('profile.update');
             Route::delete('', 'destroy')->name('profile.destroy');
         });
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
-    Route::post('/notifications/{id}/destroy', [NotificationController::class, 'destroy'])->name('notifications.destroy');
-    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+
+    Route::controller(NotificationController::class)->group(function (): void {
+        Route::get('/notifications', 'index')->name('notifications.index');
+        Route::post('/notifications/{id}/read', 'markAsRead')->name('notifications.mark-as-read');
+        Route::delete('/notifications/{id}/destroy', 'destroy')->name('notifications.destroy');
+        Route::post('/notifications/read-all', 'markAllAsRead')->name('notifications.mark-all-read');
+    });
+
 });
