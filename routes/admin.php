@@ -11,22 +11,6 @@ Route::prefix('dashboard/admin')
     ->middleware('admin')
     ->group(function (): void {
         Route::get('', DashboardController::class);
-        Route::resource('categories', CategoryController::class)->names([
-            'index' => 'dashboard.categories.index',
-            'create' => 'dashboard.categories.create',
-            'store' => 'dashboard.categories.store',
-            'show' => 'dashboard.categories.show',
-            'edit' => 'dashboard.categories.edit',
-            'update' => 'dashboard.categories.update',
-            'destroy' => 'dashboard.categories.destroy',
-        ]);
-        Route::resource('tickets', TicketController::class)->names([
-            'index' => 'dashboard.tickets.index',
-            'create' => 'dashboard.tickets.create',
-            'store' => 'dashboard.tickets.store',
-            'show' => 'dashboard.tickets.show',
-            'edit' => 'dashboard.tickets.edit',
-            'update' => 'dashboard.tickets.update',
-            'destroy' => 'dashboard.tickets.destroy',
-        ]);
+        Route::resource('categories', CategoryController::class)->names('dashboard.categories');
+        Route::resource('tickets', TicketController::class)->names('dashboard.tickets');
     });

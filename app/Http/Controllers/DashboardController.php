@@ -23,7 +23,7 @@ final class DashboardController extends Controller
         $agentRoleId = Role::where('name', Roles::AGENT->value)->value('id');
         $customerRoleId = Role::where('name', Roles::CUSTOMER->value)->value('id');
 
-        return view('dashboard.layout', [
+        return view('dashboard.admin.analytics', [
             'totalCustomers' => User::where('role_id', $customerRoleId)->count(),
             'totalAgents' => User::where('role_id', $agentRoleId)->count(),
             'onlineCustomers' => User::where('status', ActivityStatus::ONLINE->value)->count(),

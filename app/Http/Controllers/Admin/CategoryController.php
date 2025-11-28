@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
-use App\Actions\CreateCategoryAction;
-use App\Actions\DeleteCategoryAction;
-use App\Actions\UpdateCategoryAction;
+use App\Actions\Admin\Category\CreateCategoryAction;
+use App\Actions\Admin\Category\DeleteCategoryAction;
+use App\Actions\Admin\Category\UpdateCategoryAction;
 use App\DTOs\Admin\CategoryDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCategoryRequest;

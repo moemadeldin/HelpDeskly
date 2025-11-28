@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions;
+namespace App\Actions\Admin\Category;
 
 use App\DTOs\Admin\CategoryDTO;
 use App\Models\Category;
