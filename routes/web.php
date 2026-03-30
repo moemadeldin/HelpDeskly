@@ -15,8 +15,8 @@ Route::middleware('guest')->group(function (): void {
     Route::controller(AuthController::class)->group(function (): void {
         Route::get('register', 'registerForm')->name('register');
         Route::post('register', 'register');
-        Route::get('login', 'loginForm')->name('login.get');
-        Route::post('login', 'login')->name('login.post')->middleware('throttle:4,1');
+        Route::get('login', 'loginForm')->name('login');
+        Route::post('login', 'login')->name('login.post');
     });
     Route::controller(PasswordRecoveryController::class)->group(function (): void {
         Route::get('/forgot-password', 'forgotPasswordForm')->name('forgot-password.get');

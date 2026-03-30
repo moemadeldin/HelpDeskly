@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AgentMiddleware;
+use App\Http\Middleware\BroadcastAuth;
 use App\Http\Middleware\CustomerMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
+        channels: __DIR__.'/../routes/channels.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -20,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'customer' => CustomerMiddleware::class,
             'admin' => AdminMiddleware::class,
             'agent' => AgentMiddleware::class,
+            'broadcast.auth' => BroadcastAuth::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

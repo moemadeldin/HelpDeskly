@@ -24,6 +24,8 @@ final class TicketMessageController extends Controller
 
     public function store(StoreMessageRequest $request, CreateTicketMessageAction $action, Ticket $ticket): MessageResource
     {
+        $this->authorize('reply', $ticket);
+        
         $message = $action->handle($request->safe()->message, $ticket);
 
         return new MessageResource($message);

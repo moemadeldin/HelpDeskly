@@ -32,7 +32,7 @@ final class StoreTicketRequest extends FormRequest
             'category_id' => ['required', 'string', 'exists:categories,id'],
             'priority' => ['required', Rule::in(TicketPriority::cases())],
             'attachments' => ['nullable', 'array', 'max:'.Constants::$ALLOWED_NUMBER_OF_ATTACHMENTS],
-            'attachments.*' => ['file', 'mimes:png,jpg,jpeg,pdf,doc,docx,txt', 'max:10240'],
+            'attachments.*' => ['file', 'mimes:png,jpg,jpeg,webp,pdf,doc,docx,txt', 'max:10240'],
         ];
     }
 }

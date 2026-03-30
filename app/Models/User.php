@@ -73,14 +73,9 @@ final class User extends Authenticatable
         return $this->status === ActivityStatus::OFFLINE->value;
     }
 
-    public function scopeGetUserByEmail(Builder $query, string $email): Builder
-    {
-        return $query->where('email', $email);
-    }
-
     public function getFullNameAttribute(): string
     {
-        return trim(ucwords($this->first_name.' '.$this->last_name));
+        return mb_trim(ucwords($this->first_name.' '.$this->last_name));
     }
 
     public function role(): BelongsTo

@@ -21,7 +21,7 @@ final class PasswordRecoveryService implements PasswordRecoveryServiceInterface
     {
         return DB::transaction(function () use ($dto): User {
 
-            $user = User::getUserByEmail($dto->email)->first();
+            $user = User::whereEmail($dto->email)->first();
 
             $code = $this->generateRandomVerificationCode();
             $codeExpiration = $this->generateVerificationCodeExpireAt();

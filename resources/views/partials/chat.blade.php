@@ -5,31 +5,49 @@
 
     <div id="messages-container" class="h-96 overflow-y-auto p-6 space-y-4 bg-gray-50">
         @forelse($messages as $message)
-            <div class="message-item flex {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}"
+            @php $isMe = $message->sender_id === auth()->id(); @endphp
+
+            <div class="message-item flex {{ $isMe ? 'justify-end' : 'justify-start' }}"
                 data-message-id="{{ $message->_id }}">
-                <div class="max-w-xs lg:max-w-md">
-                    <div
-                        class="flex items-end space-x-2 {{ $message->sender_id === auth()->id() ? 'flex-row-reverse space-x-reverse' : '' }}">
-                        <div
-                            class="flex-shrink-0 w-8 h-8 rounded-full {{ $message->role->value === \App\Enums\Roles::CUSTOMER->value ? 'bg-blue-500' : ($message->role->value === \App\Enums\Roles::AGENT->value ? 'bg-green-500' : 'bg-purple-500') }} flex items-center justify-center text-white text-sm font-semibold">
-                            {{ strtoupper(substr($message->role->value, 0, 1)) }}
-                        </div>
-                        <div>
-                            <div
-                                class="px-4 py-2 rounded-lg {{ $message->sender_id === auth()->id() ? 'bg-blue-600 text-white' : 'bg-white border border-gray-200 text-gray-800' }}">
+
+                @if($isMe)
+                    {{-- MY message: [bubble] [avatar] --}}
+                    <div class="flex items-end gap-2">
+                        <div class="max-w-xs lg:max-w-md">
+                            <div class="px-4 py-2 rounded-lg bg-blue-600 text-white">
                                 <p class="text-sm break-words">{{ $message->message }}</p>
                             </div>
-                            <div
-                                class="flex items-center mt-1 space-x-2 text-xs text-gray-500 {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
+                            <div class="flex items-center mt-1 space-x-2 text-xs text-gray-500 justify-end">
                                 <span>{{ $message->created_at->format('h:i A') }}</span>
-                                @if($message->sender_id === auth()->id())
-                                    <span>•</span>
-                                    <span>{{ $message->is_seen ? 'Seen' : 'Sent' }}</span>
-                                @endif
+                                <span>•</span>
+                                <span>{{ $message->is_seen ? 'Seen' : 'Sent' }}</span>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full
+                                    {{ $message->role->value === \App\Enums\Roles::CUSTOMER->value ? 'bg-blue-500' : ($message->role->value === \App\Enums\Roles::AGENT->value ? 'bg-green-500' : 'bg-purple-500') }}
+                                    flex items-center justify-center text-white text-sm font-semibold">
+                            {{ strtoupper(substr($message->role->value, 0, 1)) }}
+                        </div>
+                    </div>
+                @else
+                    {{-- OTHER message: [avatar] [bubble] --}}
+                    <div class="flex items-end gap-2">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full
+                                    {{ $message->role->value === \App\Enums\Roles::CUSTOMER->value ? 'bg-blue-500' : ($message->role->value === \App\Enums\Roles::AGENT->value ? 'bg-green-500' : 'bg-purple-500') }}
+                                    flex items-center justify-center text-white text-sm font-semibold">
+                            {{ strtoupper(substr($message->role->value, 0, 1)) }}
+                        </div>
+                        <div class="max-w-xs lg:max-w-md">
+                            <div class="px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-800">
+                                <p class="text-sm break-words">{{ $message->message }}</p>
+                            </div>
+                            <div class="flex items-center mt-1 space-x-2 text-xs text-gray-500 justify-start">
+                                <span>{{ $message->created_at->format('h:i A') }}</span>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
+
             </div>
         @empty
             <div class="flex items-center justify-center h-full">
@@ -91,7 +109,8 @@
         messageInput.disabled = true;
         errorMsg.classList.add('hidden');
 
-        fetch('/tickets/' + ticketId + '/messages', {
+        const url = "{{ auth()->user()->isAgent() ? route('dashboard.agent.message.post', ':ticketId') : route('message.post', ':ticketId') }}".replace(':ticketId', ticketId);
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -100,9 +119,7 @@
             },
             body: JSON.stringify({ message: message })
         })
-            .then(function (response) {
-                return response.json();
-            })
+            .then(function (response) { return response.json(); })
             .then(function (data) {
                 if (data.success) {
                     messageInput.value = '';
@@ -128,25 +145,35 @@
     function appendMessage(message, currentUserId) {
         var container = document.getElementById('messages-container');
 
-        // Check if message already exists
-        if (document.querySelector('[data-message-id="' + message.id + '"]')) {
-            return;
-        }
+        if (document.querySelector('[data-message-id="' + message.id + '"]')) return;
 
         var isMe = message.sender_id === currentUserId;
+
+        var roleColors = { customer: 'bg-blue-500', agent: 'bg-green-500', admin: 'bg-purple-500' };
+        var avatarColor = roleColors[message.role] || 'bg-gray-500';
+        var avatarLetter = message.role.charAt(0).toUpperCase();
+
+        var avatar = '<div class="flex-shrink-0 w-8 h-8 rounded-full ' + avatarColor + ' flex items-center justify-center text-white text-sm font-semibold">' + avatarLetter + '</div>';
+
+        var bubble = '<div class="max-w-xs lg:max-w-md">'
+            + '<div class="px-4 py-2 rounded-lg ' + (isMe ? 'bg-blue-600 text-white' : 'bg-white border border-gray-200 text-gray-800') + '">'
+            + '<p class="text-sm break-words">' + escapeHtml(message.message) + '</p>'
+            + '</div>'
+            + '<div class="flex items-center mt-1 space-x-2 text-xs text-gray-500 ' + (isMe ? 'justify-end' : 'justify-start') + '">'
+            + '<span>Just now</span>'
+            + '</div>'
+            + '</div>';
+
         var msgDiv = document.createElement('div');
         msgDiv.className = 'message-item flex ' + (isMe ? 'justify-end' : 'justify-start');
         msgDiv.setAttribute('data-message-id', message.id);
 
-        var roleColors = {
-            customer: 'bg-blue-500',
-            agent: 'bg-green-500',
-            admin: 'bg-purple-500'
-        };
-        var avatarColor = roleColors[message.role] || 'bg-gray-500';
+        var inner = document.createElement('div');
+        inner.className = 'flex items-end gap-2';
+        // KEY: avatar goes AFTER bubble for "me", BEFORE for others
+        inner.innerHTML = isMe ? (bubble + avatar) : (avatar + bubble);
 
-        msgDiv.innerHTML = '<div class="max-w-xs lg:max-w-md"><div class="flex items-end space-x-2 ' + (isMe ? 'flex-row-reverse space-x-reverse' : '') + '"><div class="flex-shrink-0 w-8 h-8 rounded-full ' + avatarColor + ' flex items-center justify-center text-white text-sm font-semibold">' + message.role.charAt(0).toUpperCase() + '</div><div><div class="px-4 py-2 rounded-lg ' + (isMe ? 'bg-blue-600 text-white' : 'bg-white border border-gray-200 text-gray-800') + '"><p class="text-sm break-words">' + escapeHtml(message.message) + '</p></div><div class="flex items-center mt-1 space-x-2 text-xs text-gray-500 ' + (isMe ? 'justify-end' : 'justify-start') + '"><span>Just now</span></div></div></div></div>';
-
+        msgDiv.appendChild(inner);
         container.appendChild(msgDiv);
     }
 
@@ -156,29 +183,28 @@
         return div.innerHTML;
     }
 
-    // Listen for new messages via Laravel Echo
     document.addEventListener('DOMContentLoaded', function () {
         var form = document.querySelector('.chat-form');
-        if (form && typeof window.Echo !== 'undefined') {
+        if (form && typeof window.pusher !== 'undefined') {
             var ticketId = form.querySelector('input[name="ticket_id"]').value;
             var userId = parseInt(form.querySelector('input[name="user_id"]').value);
+            var channelName = 'private-ticket.' + ticketId;
+            var channel = window.pusher.subscribe(channelName);
 
-            console.log('Listening to channel: ticket.' + ticketId);
-
-            window.Echo.private('ticket.' + ticketId)
-                .listen('.message.sent', function (e) {
-                    console.log('New message received:', e);
-                    appendMessage(e.message, userId);
-
-                    var container = document.getElementById('messages-container');
-                    container.scrollTop = container.scrollHeight;
-                });
+            channel.bind('pusher:subscription_succeeded', function (members) {
+                console.log('%c✅ Pusher subscription succeeded!', 'color: green; font-weight: bold', members);
+            });
+            channel.bind('pusher:subscription_error', function (status) {
+                console.log('%c❌ Pusher subscription error:', 'color: red; font-weight: bold', status);
+            });
+            channel.bind('message.sent', function (data) {
+                appendMessage(data.message, userId);
+                var container = document.getElementById('messages-container');
+                container.scrollTop = container.scrollHeight;
+            });
         }
 
-        // Scroll to bottom on load
         var container = document.getElementById('messages-container');
-        if (container) {
-            container.scrollTop = container.scrollHeight;
-        }
+        if (container) container.scrollTop = container.scrollHeight;
     });
 </script>

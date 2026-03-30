@@ -31,7 +31,7 @@ final class AuthService implements AuthServiceInterface
 
     public function login(LoginDTO $dto): mixed
     {
-        $user = User::getUserByEmail($dto->email)->first();
+        $user = User::whereEmail($dto->email)->first();
 
         if (! Hash::check($dto->password, $user->password)) {
             return false;

@@ -20,4 +20,17 @@ final class TicketPolicy
 
         return $user->isAdmin();
     }
+    public function reply(User $user, Ticket $ticket): bool
+    {
+        if ($user->isAdmin()) {
+            return false;
+        }
+        if ($user->id === $ticket->user_id) {
+            return true;
+        }
+        if ($user->isAgent() && $user->id === $ticket->agent_id) {
+            return true;
+        }
+        return false;
+    }
 }
